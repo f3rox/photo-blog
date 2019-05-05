@@ -70,7 +70,6 @@ class App extends React.Component {
         console.log("TEST");
         console.log(post);
         console.log("UPDATE");
-        // if (post.author === getCurrentUsername()) PostActions.updatePost(post.id, post.title, post.text);
     }
 
     handlePostDelete(post) {

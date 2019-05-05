@@ -1,7 +1,6 @@
 module.exports = {
     devServer: {
         historyApiFallback: true,
-        // {index: __dirname + '/public/build/'},
         contentBase: './',
         hot: true
     },

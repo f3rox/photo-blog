@@ -50,6 +50,7 @@ module.exports = {
                 return post.save();
             });
     },
+    // Подписка
     subscribeUser: function (whoUsername, targetUsername) {
         return Subscription.findOneAndUpdate(
             {username: whoUsername},
@@ -62,6 +63,7 @@ module.exports = {
                 return user.save();
             });
     },
+    // Получить подписки пользователя
     getUserSubscriptions: function (username) {
         return Subscription.findOne({username: username});
     }

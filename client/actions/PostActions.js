@@ -23,13 +23,11 @@ const PostActions = {
                 })
             );
     },
-
     createPost(post) {
         api.createPost(post)
             .then(() => this.loadPosts())
             .catch(err => console.error(err));
     },
-
     deletePost(postId) {
         api.deletePost(postId)
             .then(() => this.loadPosts())

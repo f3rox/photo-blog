@@ -1,6 +1,7 @@
 const axios = require('axios');
 const config = require('../../config.json');
 module.exports = {
+    // Получить нужное количество рандомных картинок (не более 100)
     getRandomCats: function (qt) {
         return axios.get(config.catApi.url, {
             params: {
@@ -9,6 +10,7 @@ module.exports = {
             }
         });
     },
+    // Получить рандомную картинку
     getRandomCat: function () {
         return axios.get(config.catApi.url, {
             params: {
