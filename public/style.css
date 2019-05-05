@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: normal;
+    line-height: normal;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background-color: #e6ecf0;
+}
+
+#mount-point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

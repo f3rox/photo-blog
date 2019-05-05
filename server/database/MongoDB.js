@@ -1,0 +1,68 @@
+const mongoose = require('mongoose');
+const Post = require('../models/Post');
+const Subscription = require('../models/Subscription');
+const config = require('../../config.json');
+
+module.exports = {
+    // Установить соединение
+    setUpConnection: function () {
+        return mongoose.connect(config.mongodb.url, {useNewUrlParser: true});
+    },
+    // Создать пост
+    createPost: function (data) {
+        const post = new Post({
+            author: data.author,
+            title: data.title,
+            text: data.text,
+            pic: data.pic,
+            createdAt: Date.now()
+        });
+        return post.save();
+    },
+    // Получить все посты
+    getAllPosts: function () {
+        return Post.find();
+    },
+    // Удалить пост по id
+    deletePost: function (id) {
+        return Post.findById(id).deleteOne();
+    },
+    // Лайк
+    putLike: function (id, username) {
+        return Post.findById(id)
+            .then(post => {
+                const index = post.likes.indexOf(username);
+                if (index >= 0) post.likes.splice(index, 1);
+                else post.likes.push(username);
+                return post.save();
+            });
+    },
+    // Удалить все посты
+    deleteAllPosts: function () {
+        return Post.find().deleteMany();
+    },
+    // Обновить пост
+    updatePost: function (id, title, text) {
+        return Post.findById(id)
+            .then(post => {
+                post.title = title;
+                post.text = text;
+                return post.save();
+            });
+    },
+    subscribeUser: function (whoUsername, targetUsername) {
+        return Subscription.findOneAndUpdate(
+            {username: whoUsername},
+            {username: whoUsername},
+            {upsert: true, useFindAndModify: false})
+            .then(user => {
+                const index = user.subscriptions.indexOf(targetUsername);
+                if (index >= 0) user.subscriptions.splice(index, 1);
+                else user.subscriptions.push(targetUsername);
+                return user.save();
+            });
+    },
+    getUserSubscriptions: function (username) {
+        return Subscription.findOne({username: username});
+    }
+};

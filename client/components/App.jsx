@@ -1,0 +1,155 @@
+import React from 'react';
+import PostStore from '../store/PostStore';
+import PostActions from "../actions/PostActions";
+import PostForm from './Post/PostForm.jsx';
+import PostGrid from './Post/PostGrid.jsx';
+import Navbar from './Navbar.jsx';
+import Login from './Auth/Login.jsx';
+import ProfileCard from './Profile/ProfileCard.jsx';
+import Register from './Auth/Register.jsx';
+import './App.less';
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
+import jwt_decode from "jwt-decode";
+import ProfileInfo from "./Profile/ProfileInfo.jsx";
+import api from '../api';
+
+function getStateFromFlux() {
+    return {
+        isLoading: PostStore.isLoading(),
+        posts: PostStore.getPosts()
+    };
+}
+
+function sortByDate(post1, post2) {
+    if (post1.createdAt > post2.createdAt) return -1;
+    else if (post1.createdAt < post2.createdAt) return 1;
+    return 0;
+}
+
+function sortByLikes(post1, post2) {
+    if (post1.likes.length > post2.likes.length) return -1;
+    else if (post1.likes.length < post2.likes.length) return 1;
+    return 0;
+}
+
+function decodeToken() {
+    return jwt_decode(localStorage.usertoken);
+}
+
+function getCurrentUsername() {
+    return decodeToken().username;
+}
+
+class App extends React.Component {
+    constructor() {
+        super();
+        this.state = getStateFromFlux();
+        this.onChange = this.onChange.bind(this);
+        this.Profile = this.Profile.bind(this);
+    }
+
+    componentDidMount() {
+        PostStore.addChangeListener(this.onChange);
+        if (localStorage.usertoken) api.getUserSubscriptions(getCurrentUsername())
+            .then(res => {
+                if (res.status) this.setState({currentUserSubscriptions: res.subscriptions});
+                else this.setState({currentUserSubscriptions: null});
+            });
+    }
+
+    componentWillUnmount() {
+        PostStore.removeChangeListener(this.onChange);
+    }
+
+    handlePostAdd(post) {
+        post.author = getCurrentUsername();
+        PostActions.createPost(post);
+    }
+
+    handlePostUpdate(post) {
+        console.log("TEST");
+        console.log(post);
+        console.log("UPDATE");
+        // if (post.author === getCurrentUsername()) PostActions.updatePost(post.id, post.title, post.text);
+    }
+
+    handlePostDelete(post) {
+        if (post.author === getCurrentUsername()) PostActions.deletePost(post.id);
+    }
+
+    handlePostLike(post) {
+        PostActions.putLike(post.id, getCurrentUsername());
+    }
+
+    getUserPosts(username) {
+        return this.state.posts.filter(post => post.author === username).sort(sortByDate);
+    }
+
+    getCurrentUserPosts() {
+        return this.getUserPosts(getCurrentUsername());
+    }
+
+    getCurrentUserFeedPosts() {
+        if (this.state.currentUserSubscriptions) {
+            const subscriptions = this.state.currentUserSubscriptions;
+            return this.state.posts.filter(post => subscriptions.includes(post.author)).sort(sortByDate);
+        }
+        else return null;
+    }
+
+    Profile({match}) {
+        const username = match.params.username;
+        if (!localStorage.usertoken) return <Redirect to="/login"/>;
+        else if (username === getCurrentUsername()) return <Redirect to="/profile"/>;
+        return <div>
+            <ProfileCard username={username} currentUser={getCurrentUsername()}/>
+            <PostGrid posts={this.getUserPosts(username)} onPostLike={this.handlePostLike}/>
+        </div>
+    }
+
+    render() {
+        console.log(this.state);
+        return (
+            <Router>
+                <div className="App">
+                    <Navbar/>
+                    <Route exact path="/register" component={Register}/>
+                    <Route exact path="/login" component={Login}/>
+                    <Route exact path="/" render={() => (
+                        <PostGrid posts={this.state.posts.sort(sortByLikes)}
+                                  onPostLike={this.handlePostLike}/>
+                    )
+                    }/>
+                    <Route exact path="/profile" render={() => {
+                        if (!localStorage.usertoken) return <Redirect to="/login"/>;
+                        const decode = decodeToken();
+                        return (
+                            <div>
+                                <ProfileInfo username={decode.username} email={decode.email} created={decode.created}/>
+                                <PostForm onPostAdd={this.handlePostAdd}/>
+                                <PostGrid
+                                    posts={this.getCurrentUserPosts()}
+                                    onPostDelete={this.handlePostDelete}
+                                    onPostLike={this.handlePostLike}
+                                    onPostUpdate={this.handlePostUpdate}
+                                />
+                            </div>
+                        )
+                    }
+                    }/>
+                    <Route exact path="/profile/:username" component={this.Profile}/>
+                    <Route exact path="/feed" render={() => {
+                        return <PostGrid posts={this.getCurrentUserFeedPosts()} onPostLike={this.handlePostLike}/>
+
+                    }}/>
+                </div>
+            </Router>
+        )
+    }
+
+    onChange() {
+        this.setState(getStateFromFlux());
+    }
+}
+
+export default App;

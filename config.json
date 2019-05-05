@@ -1,0 +1,46 @@
+{
+  "server": {
+    "url": "http://localhost:8080",
+    "httpPort": "8080",
+    "httpsPort": "443",
+    "httpLog": "HTTP server is running on port: ",
+    "httpsLog": "HTTPS server is running on port: "
+  },
+  "mongodb": {
+    "url": "mongodb://localhost:27017/posts",
+    "successMessage": "Successfully connected to MongoDB",
+    "errorMessage": "MongoDB connection error!",
+    "subscriptionsNotFoundErrorMessage": "Пользователь не найден либо подписки отсутствуют"
+  },
+  "mysql": {
+    "host": "localhost",
+    "database": "Users",
+    "table": "account",
+    "username": "root",
+    "password": "root",
+    "successMessage": "Successfully connected to MySQL",
+    "errorMessage": "MySQL connection error!\n",
+    "userNotFoundMessage": "Пользователь не найден",
+    "accessDeniedMessage": "Отказано в доступе"
+  },
+  "auth": {
+    "secretKey": "secret",
+    "saltRounds": 10,
+    "emailAlreadyExistsMessage": "Этот email уже зарегистрирован",
+    "usernameAlreadyExistsMessage": "Это имя пользователя уже зарегистрировано",
+    "wrongEmailOrPasswordMessage": "Неверный email или пароль",
+    "tooShortPasswordMessage": "Пароль не может быть короче 6 символов",
+    "incorrectEmailMessage": "Введите корректный email",
+    "tooShortUsername": "Имя пользователя не может быть короче 5 символов",
+    "usernameMinLength": 5,
+    "passwordMinLength": 6
+  },
+  "catApi": {
+    "url": "https://api.thecatapi.com/v1/images/search",
+    "mime_types": "jpg,png"
+  },
+  "posts": {
+    "dateLocale": "ru",
+    "dateFormat": "DD MMMM YYYY, HH:mm"
+  }
+}
