@@ -21,8 +21,7 @@ class ProfileCard extends React.Component {
                 else this.setState({isSubscribed: false});
             });
     }
-
-    // DidMount?
+    
     componentWillMount() {
         api.getUser(this.props.username)
             .then(user => {

@@ -12,11 +12,13 @@ import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 import ProfileInfo from "./Profile/ProfileInfo.jsx";
 import api from '../api';
+import PostEditor from './Post/PostEditor.jsx';
 
 function getStateFromFlux() {
     return {
         isLoading: PostStore.isLoading(),
-        posts: PostStore.getPosts()
+        posts: PostStore.getPosts(),
+        isEditorOpen: false
     };
 }
 
@@ -46,6 +48,8 @@ class App extends React.Component {
         this.state = getStateFromFlux();
         this.onChange = this.onChange.bind(this);
         this.Profile = this.Profile.bind(this);
+        this.handlePostEdit = this.handlePostEdit.bind(this);
+        this.handlePostEditorClose = this.handlePostEditorClose.bind(this);
     }
 
     componentDidMount() {
@@ -66,10 +70,23 @@ class App extends React.Component {
         PostActions.createPost(post);
     }
 
-    handlePostUpdate(post) {
-        console.log("TEST");
+    handlePostEdit(post) {
+        console.log("EDIT");
         console.log(post);
+        const editPost = {
+            id: post.id,
+            title: post.title,
+            text: post.text,
+            pic: post.pic
+        };
+        this.setState({isEditorOpen: true, editPost: editPost});
+    }
+
+    handlePostUpdate(post) {
         console.log("UPDATE");
+        console.log(post);
+        PostActions.updatePost(post.id, post.title, post.text);
+        this.setState({isEditorOpen: false, editPost: null});
     }
 
     handlePostDelete(post) {
@@ -94,6 +111,10 @@ class App extends React.Component {
             return this.state.posts.filter(post => subscriptions.includes(post.author)).sort(sortByDate);
         }
         else return null;
+    }
+
+    handlePostEditorClose() {
+        this.setState({isEditorOpen: false, editPost: null});
     }
 
     Profile({match}) {
@@ -124,13 +145,17 @@ class App extends React.Component {
                         const decode = decodeToken();
                         return (
                             <div>
+                                {this.state.isEditorOpen ?
+                                    <PostEditor post={this.state.editPost}
+                                                onUpdate={this.handlePostUpdate}
+                                                onClose={this.handlePostEditorClose}/> : null}
                                 <ProfileInfo username={decode.username} email={decode.email} created={decode.created}/>
                                 <PostForm onPostAdd={this.handlePostAdd}/>
                                 <PostGrid
                                     posts={this.getCurrentUserPosts()}
                                     onPostDelete={this.handlePostDelete}
                                     onPostLike={this.handlePostLike}
-                                    onPostUpdate={this.handlePostUpdate}
+                                    onPostEdit={this.handlePostEdit}
                                 />
                             </div>
                         )

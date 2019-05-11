@@ -36,7 +36,7 @@ class PostGrid extends React.Component {
                     {
                         this.props.posts.map(post =>
                             <Post
-                                id={post.id}
+                                // id={post.id}
                                 key={post.id}
                                 title={post.title}
                                 pic={post.pic}
@@ -45,8 +45,7 @@ class PostGrid extends React.Component {
                                 createdAt={post.createdAt}
                                 ruDate={post.ruDate}
                                 likes={post.likes}
-                                onUpdate={this.props.onPostUpdate ? this.props.onPostUpdate.bind(null, post) : null}
-                                // onUpdate={this.props.onPostUpdate ? this.props.onPostUpdate : null}
+                                onEdit={this.props.onPostEdit ? this.props.onPostEdit.bind(null, post) : null}
                                 onDelete={this.props.onPostDelete ? this.props.onPostDelete.bind(null, post) : null}
                                 onLike={this.props.onPostLike ? this.props.onPostLike.bind(null, post) : null}
                                 currentUser={currentUser}

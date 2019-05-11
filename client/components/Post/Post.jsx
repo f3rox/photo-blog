@@ -3,11 +3,6 @@ import {Link, Redirect} from "react-router-dom";
 import './Post.less';
 
 class Post extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
-
     render() {
         let likeClass = ['Post__like-icon'];
         console.log(this.props);
@@ -22,9 +17,9 @@ class Post extends React.Component {
                         null
                 }
                 {
-                    this.props.onUpdate
+                    this.props.onEdit
                         ?
-                        <span className='Post__edit-icon' onClick={this.props.onUpdate}> 🖉 </span>
+                        <span className='Post__edit-icon' onClick={this.props.onEdit}> 🖉 </span>
                         :
                         null
                 }
@@ -50,8 +45,6 @@ class Post extends React.Component {
             </div>
         )
     }
-
-    // edit 🖉 ❤ ✎
 }
 
 export default Post;
