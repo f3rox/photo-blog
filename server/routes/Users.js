@@ -21,8 +21,7 @@ users.post('/login', (req, res) => {
             else res.json({status: false, message: config.auth.wrongEmailOrPasswordMessage});
         })
         .catch(err => {
-            res.status(500);
-            res.send(err.toString());
+            res.status(500).json({error: err.toString()});
             console.error(err);
         });
 });
@@ -62,8 +61,7 @@ users.post('/register', (req, res) => {
         })
         .catch(err => {
             if (err) {
-                res.status(500);
-                res.send(err.toString());
+                res.status(500).json({error: err.toString()});
                 console.error(err);
             }
         })
@@ -78,8 +76,7 @@ users.post('/subscribe/:username', (req, res) => {
             res.json(user)
         })
         .catch(err => {
-            res.status(500);
-            res.send(err.toString());
+            res.status(500).json({error: err.toString()});
             console.error(err);
         });
 });
@@ -92,8 +89,7 @@ users.get('/:username', (req, res) => {
             else res.status(404).send(config.mysql.userNotFoundMessage);
         })
         .catch(err => {
-            res.status(500);
-            res.send(err.toString());
+            res.status(500).json({error: err.toString()});
             console.error(err);
         });
 });
@@ -106,8 +102,7 @@ users.get('/subscriptions/:username', (req, res) => {
             else res.status(404).json({status: false, message: config.mongodb.subscriptionsNotFoundErrorMessage});
         })
         .catch(err => {
-            res.status(500);
-            res.send(err.toString());
+            res.status(500).json({error: err.toString()});
             console.error(err);
         });
 });
