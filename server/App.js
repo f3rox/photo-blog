@@ -29,6 +29,7 @@ app.get('/posts', (req, res) => {
         .then(data => res.send(data))
         .catch(err => {
             res.status(500);
+            res.send(err.toString());
             console.error(err);
         });
 });
@@ -45,6 +46,7 @@ app.post('/posts', (req, res) => {
             })
     }).catch(err => {
         res.status(500);
+        res.send(err.toString());
         console.error(err);
     });
 });
@@ -59,6 +61,7 @@ app.delete('/posts/:id', (req, res) => {
         })
         .catch(err => {
             res.status(500);
+            res.send(err.toString());
             console.error(err);
         });
 });
@@ -74,6 +77,7 @@ app.delete('/posts', (req, res) => {
             })
             .catch(err => {
                 res.status(500);
+                res.send(err.toString());
                 console.error(err);
             });
     else res.send(config.mysql.accessDeniedMessage);
@@ -89,6 +93,7 @@ app.patch('/posts/:id', (req, res) => {
         })
         .catch(err => {
             res.status(500);
+            res.send(err.toString());
             console.error(err);
         });
 });
@@ -99,6 +104,7 @@ app.put('/posts/:id', (req, res) => {
         .then(data => res.send(data))
         .catch(err => {
             res.status(500);
+            res.send(err.toString());
             console.error(err);
         });
 });
@@ -109,6 +115,7 @@ app.get('/cat', (req, res) => {
         .then(img => res.send(img.data[0].url))
         .catch(err => {
             res.status(500);
+            res.send(err.toString());
             console.error(err);
         });
 });
@@ -119,6 +126,7 @@ app.get('/cats/:qt', (req, res) => {
         .then(img => res.send(img.data.map(pic => pic.url)))
         .catch(err => {
             res.status(500);
+            res.send(err.toString());
             console.error(err);
         });
 });

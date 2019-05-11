@@ -20,7 +20,11 @@ users.post('/login', (req, res) => {
             }
             else res.json({status: false, message: config.auth.wrongEmailOrPasswordMessage});
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+            res.status(500);
+            res.send(err.toString());
+            console.error(err);
+        });
 });
 
 // Регистрация
@@ -57,7 +61,11 @@ users.post('/register', (req, res) => {
             }
         })
         .catch(err => {
-            if (err) console.error(err);
+            if (err) {
+                res.status(500);
+                res.send(err.toString());
+                console.error(err);
+            }
         })
 });
 
@@ -69,7 +77,11 @@ users.post('/subscribe/:username', (req, res) => {
             console.log(user);
             res.json(user)
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            res.status(500);
+            res.send(err.toString());
+            console.error(err);
+        });
 });
 
 // Получить данные пользователя
@@ -79,7 +91,11 @@ users.get('/:username', (req, res) => {
             if (user) res.json(user);
             else res.status(404).send(config.mysql.userNotFoundMessage);
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+            res.status(500);
+            res.send(err.toString());
+            console.error(err);
+        });
 });
 
 // Получить подписки пользователя
@@ -89,7 +105,11 @@ users.get('/subscriptions/:username', (req, res) => {
             if (user) res.json({status: true, subscriptions: user.subscriptions});
             else res.status(404).json({status: false, message: config.mongodb.subscriptionsNotFoundErrorMessage});
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            res.status(500);
+            res.send(err.toString());
+            console.error(err);
+        });
 });
 
 module.exports = users;
