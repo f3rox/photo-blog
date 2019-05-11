@@ -56,7 +56,7 @@ class App extends React.Component {
         PostStore.addChangeListener(this.onChange);
         if (localStorage.usertoken) api.getUserSubscriptions(getCurrentUsername())
             .then(res => {
-                if (res.status) this.setState({currentUserSubscriptions: res.subscriptions});
+                if (res.subscriptions) this.setState({currentUserSubscriptions: res.subscriptions});
                 else this.setState({currentUserSubscriptions: null});
             });
     }

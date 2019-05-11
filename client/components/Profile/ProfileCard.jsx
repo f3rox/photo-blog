@@ -16,12 +16,12 @@ class ProfileCard extends React.Component {
     checkSubscription() {
         api.getUserSubscriptions(this.props.currentUser)
             .then(res => {
-                if (res.status && res.subscriptions.includes(this.props.username))
+                if (res.subscriptions && res.subscriptions.includes(this.props.username))
                     this.setState({isSubscribed: true});
                 else this.setState({isSubscribed: false});
             });
     }
-    
+
     componentWillMount() {
         api.getUser(this.props.username)
             .then(user => {
