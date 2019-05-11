@@ -10,7 +10,7 @@ const mongo = require('../database/MongoDB');
 users.use(cors());
 process.env.SECRET_KEY = config.auth.secretKey;
 
-// Авторизация
+// Аутентификация
 users.post('/login', (req, res) => {
     User.findOne({where: {email: req.body.email}})
         .then(user => {
@@ -86,7 +86,7 @@ users.get('/:username', (req, res) => {
     User.findOne({where: {username: req.params.username}})
         .then(user => {
             if (user) res.json(user);
-            else res.status(404).send(config.mysql.userNotFoundMessage);
+            else res.status(404).json({error: config.mysql.userNotFoundMessage});
         })
         .catch(err => {
             res.status(500).json({error: err.toString()});
@@ -98,8 +98,8 @@ users.get('/:username', (req, res) => {
 users.get('/subscriptions/:username', (req, res) => {
     mongo.getUserSubscriptions(req.params.username)
         .then(user => {
-            if (user) res.json({status: true, subscriptions: user.subscriptions});
-            else res.status(404).json({status: false, message: config.mongodb.subscriptionsNotFoundErrorMessage});
+            if (user) res.json({subscriptions: user.subscriptions});
+            else res.status(404).json({error: config.mongodb.subscriptionsNotFoundErrorMessage});
         })
         .catch(err => {
             res.status(500).json({error: err.toString()});
