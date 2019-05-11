@@ -28,6 +28,8 @@ npm run client
 
 **4. Открыть [http://localhost:8090](http://localhost:8090)**
 
+***
+
 ### [GitHub Wiki](https://github.com/iodkowski/cats-app/wiki)
 
 ### [Postman API](https://documenter.getpostman.com/view/7503489/S1LySmQ5)
