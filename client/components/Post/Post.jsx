@@ -5,7 +5,6 @@ import './Post.less';
 class Post extends React.Component {
     render() {
         let likeClass = ['Post__like-icon'];
-        console.log(this.props);
         if (this.props.likes.includes(this.props.currentUser)) likeClass.push('like-pressed');
         return (
             <div className="card Post">

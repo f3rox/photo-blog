@@ -50,19 +50,26 @@ class App extends React.Component {
         this.Profile = this.Profile.bind(this);
         this.handlePostEdit = this.handlePostEdit.bind(this);
         this.handlePostEditorClose = this.handlePostEditorClose.bind(this);
+        this.handleSubscribe = this.handleSubscribe.bind(this);
+        this.updateUserSubscriptions = this.updateUserSubscriptions.bind(this);
+        this.handlePostUpdate = this.handlePostUpdate.bind(this);
     }
 
     componentDidMount() {
         PostStore.addChangeListener(this.onChange);
+        this.updateUserSubscriptions();
+    }
+
+    componentWillUnmount() {
+        PostStore.removeChangeListener(this.onChange);
+    }
+
+    updateUserSubscriptions() {
         if (localStorage.usertoken) api.getUserSubscriptions(getCurrentUsername())
             .then(res => {
                 if (res.subscriptions) this.setState({currentUserSubscriptions: res.subscriptions});
                 else this.setState({currentUserSubscriptions: null});
             });
-    }
-
-    componentWillUnmount() {
-        PostStore.removeChangeListener(this.onChange);
     }
 
     handlePostAdd(post) {
@@ -71,8 +78,6 @@ class App extends React.Component {
     }
 
     handlePostEdit(post) {
-        console.log("EDIT");
-        console.log(post);
         const editPost = {
             id: post.id,
             title: post.title,
@@ -83,8 +88,6 @@ class App extends React.Component {
     }
 
     handlePostUpdate(post) {
-        console.log("UPDATE");
-        console.log(post);
         PostActions.updatePost(post.id, post.title, post.text);
         this.setState({isEditorOpen: false, editPost: null});
     }
@@ -117,12 +120,19 @@ class App extends React.Component {
         this.setState({isEditorOpen: false, editPost: null});
     }
 
+    handleSubscribe(targetUsername) {
+        api.subscribeUser(getCurrentUsername(), targetUsername)
+            .then(() => this.updateUserSubscriptions());
+    }
+
     Profile({match}) {
         const username = match.params.username;
         if (!localStorage.usertoken) return <Redirect to="/login"/>;
         else if (username === getCurrentUsername()) return <Redirect to="/profile"/>;
         return <div>
-            <ProfileCard username={username} currentUser={getCurrentUsername()}/>
+            <ProfileCard username={username}
+                         onSubscribe={this.handleSubscribe}
+                         isSubscribed={this.state.currentUserSubscriptions && this.state.currentUserSubscriptions.includes(username)}/>
             <PostGrid posts={this.getUserPosts(username)} onPostLike={this.handlePostLike}/>
         </div>
     }

@@ -8,31 +8,17 @@ const config = require('../../../config.json');
 class ProfileCard extends React.Component {
     constructor() {
         super();
-        this.state = {user: {username: ''}, isSubscribed: false};
+        this.state = {user: {username: ''}};
         this.handleSubscribe = this.handleSubscribe.bind(this);
-        this.checkSubscription = this.checkSubscription.bind(this);
-    }
-
-    checkSubscription() {
-        api.getUserSubscriptions(this.props.currentUser)
-            .then(res => {
-                if (res.subscriptions && res.subscriptions.includes(this.props.username))
-                    this.setState({isSubscribed: true});
-                else this.setState({isSubscribed: false});
-            });
     }
 
     componentWillMount() {
         api.getUser(this.props.username)
-            .then(user => {
-                this.setState({user: user});
-                this.checkSubscription();
-            });
+            .then(user => this.setState({user: user}));
     }
 
     handleSubscribe() {
-        api.subscribeUser(this.props.currentUser, this.state.user.username)
-            .then(() => this.checkSubscription());
+        this.props.onSubscribe(this.state.user.username);
     }
 
     render() {
@@ -44,7 +30,7 @@ class ProfileCard extends React.Component {
                     <button type="submit"
                             className="btn"
                             onClick={this.handleSubscribe}>
-                        {this.state.isSubscribed ? "Отписаться" : "Подписаться"}
+                        {this.props.isSubscribed ? "Отписаться" : "Подписаться"}
                     </button>
                 </h5>
                 <ul className="list-group list-group-flush">
