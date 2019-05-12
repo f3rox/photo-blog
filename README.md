@@ -32,4 +32,4 @@ npm run client
 
 ### [GitHub Wiki](https://github.com/iodkowski/cats-app/wiki)
 
-### [Postman API](https://documenter.getpostman.com/view/7503489/S1LySmQ5)
+### [Postman API](https://documenter.getpostman.com/view/7503489/S1LySmw6)
