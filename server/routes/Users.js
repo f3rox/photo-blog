@@ -86,7 +86,7 @@ users.get('/:username', (req, res) => {
     User.findOne({where: {username: req.params.username}})
         .then(user => {
             if (user) res.json(user);
-            else res.status(404).json({error: config.mysql.userNotFoundMessage});
+            else res.json({error: config.mysql.userNotFoundMessage});
         })
         .catch(err => {
             res.status(500).json({error: err.toString()});
@@ -99,7 +99,7 @@ users.get('/subscriptions/:username', (req, res) => {
     mongo.getUserSubscriptions(req.params.username)
         .then(user => {
             if (user) res.json({subscriptions: user.subscriptions});
-            else res.status(404).json({error: config.mongodb.subscriptionsNotFoundErrorMessage});
+            else res.json({error: config.mongodb.subscriptionsNotFoundErrorMessage});
         })
         .catch(err => {
             res.status(500).json({error: err.toString()});

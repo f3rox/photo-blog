@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Post = require('../models/Post');
-const Subscription = require('../models/Subscription');
+const UserSubscriptions = require('../models/UserSubscriptions');
 const config = require('../../config.json');
 
 module.exports = {
@@ -52,19 +52,23 @@ module.exports = {
     },
     // Подписка
     subscribeUser: function (whoUsername, targetUsername) {
-        return Subscription.findOneAndUpdate(
-            {username: whoUsername},
-            {username: whoUsername},
-            {upsert: true, useFindAndModify: false})
+        return UserSubscriptions.findOne({username: whoUsername})
+            .then(user => {
+                if (user) return user;
+                else {
+                    const user = new UserSubscriptions({username: whoUsername});
+                    return user.save();
+                }
+            })
             .then(user => {
                 const index = user.subscriptions.indexOf(targetUsername);
                 if (index >= 0) user.subscriptions.splice(index, 1);
                 else user.subscriptions.push(targetUsername);
                 return user.save();
-            });
+            })
     },
     // Получить подписки пользователя
     getUserSubscriptions: function (username) {
-        return Subscription.findOne({username: username});
+        return UserSubscriptions.findOne({username: username});
     }
 };
