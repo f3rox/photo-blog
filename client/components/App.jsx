@@ -7,12 +7,14 @@ import Navbar from './Navbar.jsx';
 import Login from './Auth/Login.jsx';
 import ProfileCard from './Profile/ProfileCard.jsx';
 import Register from './Auth/Register.jsx';
-import './App.less';
+
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 import ProfileInfo from "./Profile/ProfileInfo.jsx";
 import api from '../api';
 import PostEditor from './Post/PostEditor.jsx';
+import SubscriptionsList from "./Profile/SubscriptionsList.jsx";
+import './App.less';
 
 function getStateFromFlux() {
     return {
@@ -173,8 +175,13 @@ class App extends React.Component {
                     }/>
                     <Route exact path="/profile/:username" component={this.Profile}/>
                     <Route exact path="/feed" render={() => {
-                        return <PostGrid posts={this.getCurrentUserFeedPosts()} onPostLike={this.handlePostLike}/>
-
+                        return (
+                            <div>
+                                <SubscriptionsList onSubscribe={this.handleSubscribe}
+                                                   subscriptions={this.state.currentUserSubscriptions}/>
+                                <PostGrid posts={this.getCurrentUserFeedPosts()} onPostLike={this.handlePostLike}/>
+                            </div>
+                        )
                     }}/>
                 </div>
             </Router>

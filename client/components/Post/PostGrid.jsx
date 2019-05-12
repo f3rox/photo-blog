@@ -36,7 +36,6 @@ class PostGrid extends React.Component {
                     {
                         this.props.posts.map(post =>
                             <Post
-                                // id={post.id}
                                 key={post.id}
                                 title={post.title}
                                 pic={post.pic}
