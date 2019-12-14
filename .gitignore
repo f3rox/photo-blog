@@ -2,6 +2,9 @@
 # Created by https://www.gitignore.io/api/node,webstorm+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,webstorm+all,visualstudiocode
 
+package-lock.json
+images/
+
 ### Node ###
 # Logs
 logs

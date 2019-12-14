@@ -2,6 +2,8 @@ import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import './Post.less';
 
+const config = require('../../../config.json');
+
 class Post extends React.Component {
     render() {
         let likeClass = ['Post__like-icon'];
@@ -22,7 +24,12 @@ class Post extends React.Component {
                         :
                         null
                 }
-                <img src={this.props.pic} className="card-img-top Post__image" alt=""/>
+                {
+                    this.props.pic ?
+                        <img src={config.server.url + '/image/' + this.props.pic} className="card-img-top Post__image"
+                             alt=""/> : null
+                }
+
                 <div className="card-body">
                     {
                         localStorage.usertoken ?

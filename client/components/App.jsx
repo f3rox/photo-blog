@@ -75,7 +75,7 @@ class App extends React.Component {
     }
 
     handlePostAdd(post) {
-        post.author = getCurrentUsername();
+        post.set('author', getCurrentUsername());
         PostActions.createPost(post);
     }
 
@@ -114,8 +114,7 @@ class App extends React.Component {
         if (this.state.currentUserSubscriptions) {
             const subscriptions = this.state.currentUserSubscriptions;
             return this.state.posts.filter(post => subscriptions.includes(post.author)).sort(sortByDate);
-        }
-        else return null;
+        } else return null;
     }
 
     handlePostEditorClose() {

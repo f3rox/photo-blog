@@ -2,6 +2,7 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 const express = require('express');
+const multiparty = require('multiparty');
 const bodyParser = require('body-parser');
 const mongo = require('./database/MongoDB');
 const cors = require('cors');
@@ -9,14 +10,13 @@ const privateKey = fs.readFileSync('server/https/localhost-privateKey.key', 'utf
 const certificate = fs.readFileSync('server/https/localhost.crt', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 const catapi = require('./utils/CatAPI');
-const axios = require('axios');
 const app = express();
 const Users = require('./routes/Users');
 const config = require("../config.json");
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({origin: '*'}));
-app.use(bodyParser.urlencoded({extended: false}));
 app.use('/users', Users);
 
 mongo.setUpConnection()
@@ -33,20 +33,60 @@ app.get('/posts', (req, res) => {
         });
 });
 
+// Получить изображение
+app.get('/image/:id', (req, res) => {
+    res.sendFile(config.server.imagesPath + req.params.id);
+});
+
 // Добавить пост
 app.post('/posts', (req, res) => {
-    axios.get(config.server.url + '/cat').then(e => {
-        req.body.pic = e.data;
-        mongo.createPost(req.body)
-            .then(post => {
-                console.log('New post:');
-                console.log(post);
-                res.send(post)
-            })
-    }).catch(err => {
-        res.status(500).json({error: err.toString()});
-        console.error(err);
+    let form = new multiparty.Form();
+    let image;
+    let title;
+    let text;
+    let author;
+    form.on('close', function () {
+        let newPost = {
+            'title': title,
+            'text': text,
+            'author': author
+        };
+        if (image) {
+            const fileName =
+                Math.random().toString(36).substring(2, 15) +
+                Math.random().toString(36).substring(2, 15);
+            const fileExtension = image.filename.substring(image.filename.lastIndexOf('.') + 1);
+            const fileFullName = fileName + '.' + fileExtension;
+            fs.writeFileSync('images/' + fileFullName, Buffer.concat(image.bytes));
+            newPost.image = fileFullName;
+        }
+        mongo.createPost(newPost).then(post => {
+            console.log('New post:');
+            console.log(post);
+            res.send(post);
+        }).catch(err => {
+            res.status(500).json({error: err.toString()});
+            console.error(err);
+        });
     });
+    form.on('field', function (name, val) {
+        if (name === 'title') title = val;
+        else if (name === 'text') text = val;
+        else if (name === 'author') author = val;
+    });
+    form.on('part', function (part) {
+        if (!part.filename) return;
+        if (part.name !== 'image') return part.resume();
+        image = {};
+        image.filename = part.filename;
+        image.size = 0;
+        image.bytes = [];
+        part.on('data', function (buf) {
+            image.bytes.push(buf);
+            image.size += buf.length;
+        });
+    });
+    form.parse(req);
 });
 
 // Удалить пост по id

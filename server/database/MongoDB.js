@@ -14,7 +14,7 @@ module.exports = {
             author: data.author,
             title: data.title,
             text: data.text,
-            pic: data.pic,
+            pic: data.image,
             createdAt: Date.now()
         });
         return post.save();
