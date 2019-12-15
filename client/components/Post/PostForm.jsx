@@ -61,7 +61,7 @@ class PostForm extends React.Component {
                     </div>
                     <button
                         className="btn"
-                        disabled={!this.state.text || !this.state.title}
+                        disabled={!this.state.title || !this.state.image}
                         onClick={this.onPostAdd}
                     >
                         Отправить
