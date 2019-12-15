@@ -5,7 +5,6 @@ const multiparty = require('multiparty');
 const bodyParser = require('body-parser');
 const mongo = require('./database/MongoDB');
 const cors = require('cors');
-const catapi = require('./utils/CatAPI');
 const app = express();
 const Users = require('./routes/Users');
 const config = require("../config.json");
@@ -133,26 +132,6 @@ app.patch('/posts/:id', (req, res) => {
 app.put('/posts/:id', (req, res) => {
     mongo.putLike(req.params.id, req.body.username)
         .then(data => res.send(data))
-        .catch(err => {
-            res.status(500).json({error: err.toString()});
-            console.error(err);
-        });
-});
-
-// Получить рандомную картинку
-app.get('/cat', (req, res) => {
-    catapi.getRandomCat()
-        .then(img => res.send(img.data[0].url))
-        .catch(err => {
-            res.status(500).json({error: err.toString()});
-            console.error(err);
-        });
-});
-
-// Получить нужное количество рандомных картинок (не более 100)
-app.get('/cats/:qt', (req, res) => {
-    catapi.getRandomCats(req.params.qt)
-        .then(img => res.send(img.data.map(pic => pic.url)))
         .catch(err => {
             res.status(500).json({error: err.toString()});
             console.error(err);

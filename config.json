@@ -34,10 +34,6 @@
     "usernameMinLength": 5,
     "passwordMinLength": 6
   },
-  "catApi": {
-    "url": "https://api.thecatapi.com/v1/images/search",
-    "mime_types": "jpg,png"
-  },
   "posts": {
     "dateLocale": "ru",
     "dateFormat": "DD MMMM YYYY, HH:mm"
