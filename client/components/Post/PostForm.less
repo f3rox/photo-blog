@@ -40,6 +40,10 @@
   display: flex;
   justify-content: flex-end;
   align-items: right;
+
+  .custom-file {
+    margin-right: 10px;
+  }
 }
 
 .PostForm__button {
@@ -80,15 +84,18 @@
 .btn {
   color: white !important;
   background-color: #1da1f2 !important;
+
   &:hover {
     opacity: .9;
     transition: all 100ms ease;
   }
+
   &:active {
     opacity: .75;
     transform: scale(.97);
     transition: all 100ms ease;
   }
+
   &:focus, &:active {
     outline: none !important;
     box-shadow: none !important;
