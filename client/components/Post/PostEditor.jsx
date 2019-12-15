@@ -2,6 +2,8 @@ import React from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import './PostEditor.less';
 
+const config = require('../../../config.json');
+
 class PostEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +38,7 @@ class PostEditor extends React.Component {
                     <ModalHeader toggle={this.props.onClose}>Редактирование</ModalHeader>
                     <ModalBody>
                         <div className="card PostEditor__body">
-                            <img src={this.state.pic}
+                            <img src={config.server.url + '/image/' + this.state.pic}
                                  className="card-img-top PostEditor__image"
                                  alt=""/>
                             <div className="card-body">
