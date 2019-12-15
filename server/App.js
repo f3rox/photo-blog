@@ -1,14 +1,10 @@
 const fs = require('fs');
 const http = require('http');
-const https = require('https');
 const express = require('express');
 const multiparty = require('multiparty');
 const bodyParser = require('body-parser');
 const mongo = require('./database/MongoDB');
 const cors = require('cors');
-const privateKey = fs.readFileSync('server/https/localhost-privateKey.key', 'utf8');
-const certificate = fs.readFileSync('server/https/localhost.crt', 'utf8');
-const credentials = {key: privateKey, cert: certificate};
 const catapi = require('./utils/CatAPI');
 const app = express();
 const Users = require('./routes/Users');
@@ -166,8 +162,4 @@ app.get('/cats/:qt', (req, res) => {
 const httpServer = http.createServer(app);
 httpServer.listen(config.server.httpPort, () => {
     console.log(config.server.httpLog + config.server.httpPort);
-});
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(config.server.httpsPort, () => {
-    console.log(config.server.httpsLog + config.server.httpsPort);
 });

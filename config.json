@@ -3,9 +3,7 @@
     "imagesPath": "D:/RSN/prog/cats-app/images/",
     "url": "http://localhost:8080",
     "httpPort": "8080",
-    "httpsPort": "443",
-    "httpLog": "HTTP server is running on port: ",
-    "httpsLog": "HTTPS server is running on port: "
+    "httpLog": "HTTP server is running on port: "
   },
   "mongodb": {
     "url": "mongodb://localhost:27017/posts",
