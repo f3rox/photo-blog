@@ -6,7 +6,7 @@ const config = require('../../config.json');
 module.exports = {
     // Установить соединение
     setUpConnection: function () {
-        return mongoose.connect(config.mongodb.url, {useNewUrlParser: true});
+        return mongoose.connect(config.mongodb.url, {useNewUrlParser: true, useUnifiedTopology: true});
     },
     // Создать пост
     createPost: function (data) {
