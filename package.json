@@ -5,7 +5,7 @@
   "main": "server/App.js",
   "scripts": {
     "server": "node server/App.js",
-    "client": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --content-base public --port 8090 --host 0.0.0.0",
+    "client": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "start": "npm-run-all -p -r server client"
   },
   "author": "iodkowski",
@@ -41,7 +41,8 @@
     "react-router-dom": "^5.0.0",
     "reactstrap": "^8.0.0",
     "request": "^2.88.0",
-    "sequelize": "^5.7.4"
+    "sequelize": "^5.7.4",
+    "webpack-dev-server": "^3.9.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.16",
@@ -65,8 +66,7 @@
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-cli": "^3.3.0"
   },
   "browserslist": [
     "> 1%",
