@@ -5,7 +5,7 @@
 .DS_Store
 
 package-lock.json
-images/
+*/images/
 
 ### Node ###
 # Logs
