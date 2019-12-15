@@ -69,7 +69,7 @@ class Navbar extends React.Component {
         return (
             <nav className="navbar sticky-top navbar-expand navbar-dark">
                 <a className="navbar-brand">
-                    CatsApp
+                    PhotoBlog
                 </a>
                 <button className="navbar-toggler"
                         type="button"
