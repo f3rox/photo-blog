@@ -6,12 +6,15 @@ const PostSchema = new Schema({
             type: String,
             required: true
         },
-        text: {
+        title: {
             type: String,
             required: true
         },
-        title: String,
-        pic: String,
+        pic: {
+            type: String,
+            required: true
+        },
+        text: String,
         createdAt: Date,
         likes: [String]
     },

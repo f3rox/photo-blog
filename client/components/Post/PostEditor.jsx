@@ -66,7 +66,7 @@ class PostEditor extends React.Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={this.handlePostUpdate}>Сохранить</Button>
+                        <Button onClick={this.handlePostUpdate} disabled={!this.state.title}>Сохранить</Button>
                         <Button onClick={this.props.onClose}>Отмена</Button>
                     </ModalFooter>
                 </Modal>
