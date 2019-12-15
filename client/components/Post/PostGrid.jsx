@@ -21,9 +21,7 @@ class PostGrid extends React.Component {
             gutter: 10,
             isFitWidth: true
         };
-        // TEST
-        console.log(this.props.posts);
-
+        // console.log(this.props.posts);
         let currentUser;
         if (this.props.posts) {
             if (this.props.posts.length > 0 && localStorage.usertoken)
