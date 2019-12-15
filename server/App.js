@@ -50,7 +50,7 @@ app.post('/posts', (req, res) => {
             const fileName =
                 Math.random().toString(36).substring(2, 15) +
                 Math.random().toString(36).substring(2, 15);
-            const fileExtension = image.filename.substring(image.filename.lastIndexOf('.') + 1);
+            const fileExtension = image.filename.substring(image.filename.lastIndexOf('.') + 1).toLowerCase();
             const fileFullName = fileName + '.' + fileExtension;
             fs.writeFileSync('images/' + fileFullName, Buffer.concat(image.bytes));
             newPost.image = fileFullName;

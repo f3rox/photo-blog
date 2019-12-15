@@ -13,9 +13,18 @@ class PostForm extends React.Component {
         this.onPostAdd = this.onPostAdd.bind(this);
     }
 
+    checkFile(file) {
+        const types = ['image/png', 'image/jpeg'];
+        const extensions = ['png', 'jpg', 'jpeg'];
+        const fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase();
+        return types.includes(file.type) && extensions.includes(fileExtension);
+    }
+
     onChange(event) {
-        if (event.target.files) this.setState({image: event.target.files[0]});
-        else this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === 'title') this.setState({title: event.target.value});
+        else if (event.target.name === 'text') this.setState({text: event.target.value});
+        else if (event.target.name === 'image' && event.target.files && this.checkFile(event.target.files[0]))
+            this.setState({image: event.target.files[0]});
     }
 
     onPostAdd(event) {
@@ -54,6 +63,7 @@ class PostForm extends React.Component {
                 <div className='PostForm__footer'>
                     <div className="custom-file">
                         <input type="file" className="custom-file-input" id="customFile" name="image"
+                               accept=".png, .jpg, .jpeg"
                                onChange={this.onChange}/>
                         <label className="custom-file-label" htmlFor="customFile">
                             {this.state.image ? this.state.image.name : "Выберите изображение"}
