@@ -5,10 +5,12 @@
   "main": "server/App.js",
   "scripts": {
     "server": "node server/App.js",
-    "client": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --content-base public --port 8090 --host 0.0.0.0"
+    "client": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --content-base public --port 8090 --host 0.0.0.0",
+    "start": "npm-run-all -p -r server client"
   },
   "author": "iodkowski",
   "dependencies": {
+    "npm-run-all": "^4.1.5",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",

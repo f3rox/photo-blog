@@ -8,7 +8,7 @@ const cors = require('cors');
 const app = express();
 const Users = require('./routes/Users');
 const config = require("../config.json");
-
+const imagesDir = __dirname + '/' + config.server.imagesDir;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({origin: '*'}));
@@ -30,7 +30,7 @@ app.get('/posts', (req, res) => {
 
 // Получить изображение
 app.get('/image/:id', (req, res) => {
-    res.sendFile(config.server.imagesPath + req.params.id);
+    res.sendFile(imagesDir + req.params.id);
 });
 
 // Добавить пост
@@ -52,7 +52,8 @@ app.post('/posts', (req, res) => {
                 Math.random().toString(36).substring(2, 15);
             const fileExtension = image.filename.substring(image.filename.lastIndexOf('.') + 1).toLowerCase();
             const fileFullName = fileName + '.' + fileExtension;
-            fs.writeFileSync('images/' + fileFullName, Buffer.concat(image.bytes));
+            if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir);
+            fs.writeFileSync(imagesDir + fileFullName, Buffer.concat(image.bytes));
             newPost.image = fileFullName;
         }
         mongo.createPost(newPost).then(post => {

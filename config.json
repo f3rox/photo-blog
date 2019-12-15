@@ -1,6 +1,6 @@
 {
   "server": {
-    "imagesPath": "D:/RSN/prog/cats-app/images/",
+    "imagesDir": "images/",
     "url": "http://localhost:8080",
     "httpPort": "8080",
     "httpLog": "HTTP server is running on port: "
